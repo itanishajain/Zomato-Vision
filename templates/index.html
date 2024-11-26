@@ -9,35 +9,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Zomato Insights</h1>
-        <p>Discover trends, analyze data, and predict outcomes</p>
-    </header>
+    <!-- Background Image/GIF -->
+    <div class="background-container">
+        <img src="your-beautiful-image-or-gif.jpg" alt="Background" class="background-image">
+    </div>
 
-    <section class="hero-section">
-        <div>
-            <h2>Welcome to Zomato Insights</h2>
-            <button id="start-btn">Start Analyzing</button>
+    <!-- Landing Page Section -->
+    <section class="landing-page">
+        <div class="intro-text">
+            <h1>Zomato Insights</h1>
+            <p>Analyze restaurant data and predict the satisfaction based on various features.</p>
+            <button id="start-btn" class="start-btn">Start Prediction</button>
         </div>
     </section>
 
-    <section class="form-container" id="form-container">
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-            <div class="step active">1</div>
-            <div class="step">2</div>
-            <div class="step">3</div>
-            <div class="step">4</div>
-            <div class="step">5</div>
-            <div class="step">6</div>
-            <div class="step">7</div>
-            <div class="step">8</div>
-        </div>
-        
-        <form id="prediction-form" method="POST" action="/predict">
-            <!-- Step 1: Restaurant Type -->
+    <!-- Prediction Form Section -->
+    <section class="form-container" id="form-container" style="display: none;">
+        <form id="prediction-form">
             <div class="form-step" id="step1">
-                <h3>Step 1: Select Restaurant Type</h3>
+                <label for="feature1">Restaurant Type (Example: Casual Dining):</label>
                 <select id="feature1" name="feature1" required>
                     <option value="Casual Dining">Casual Dining</option>
                     <option value="Cafe">Cafe</option>
@@ -49,30 +39,26 @@
                 <button type="button" class="next-btn">Next</button>
             </div>
 
-            <!-- Step 2: Approximate Cost -->
             <div class="form-step" id="step2" style="display: none;">
-                <h3>Step 2: Enter Approximate Cost for Two</h3>
-                <input type="number" id="feature2" name="feature2" placeholder="Enter cost" required>
+                <label for="feature2">Approximate Cost for Two (Example: 500):</label>
+                <input type="number" id="feature2" name="feature2" placeholder="Enter cost for two" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
-            <!-- Step 3: Rating -->
             <div class="form-step" id="step3" style="display: none;">
-                <h3>Step 3: Enter Restaurant Rating</h3>
+                <label for="feature6">Restaurant Rating (Example: 4.5):</label>
                 <input type="number" step="0.1" id="feature6" name="feature6" placeholder="Enter rating" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
-            <!-- Step 4: Votes -->
             <div class="form-step" id="step4" style="display: none;">
-                <h3>Step 4: Enter Number of Votes</h3>
-                <input type="number" id="feature4" name="feature4" placeholder="Enter votes" required>
+                <label for="feature4">Number of Votes (Example: 100):</label>
+                <input type="number" id="feature4" name="feature4" placeholder="Enter number of votes" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
-            <!-- Step 5: Online Order Availability -->
             <div class="form-step" id="step5" style="display: none;">
-                <h3>Step 5: Is Online Order Available?</h3>
+                <label for="feature3">Is Online Order Available? (Example: Yes):</label>
                 <select id="feature3" name="feature3" required>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
@@ -80,41 +66,40 @@
                 <button type="button" class="next-btn">Next</button>
             </div>
 
-            <!-- Step 6: Location -->
             <div class="form-step" id="step6" style="display: none;">
-                <h3>Step 6: Enter Location</h3>
+                <label for="feature5">Restaurant Location (Example: Delhi):</label>
                 <input type="text" id="feature5" name="feature5" placeholder="Enter location" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
-            <!-- Step 7: Cuisines -->
             <div class="form-step" id="step7" style="display: none;">
-                <h3>Step 7: Enter Cuisines</h3>
-                <input type="text" id="feature7" name="feature7" placeholder="Enter cuisines (comma-separated)" required>
+                <label for="feature7">Cuisine Types (Example: Indian, Chinese):</label>
+                <input type="text" id="feature7" name="feature7" placeholder="Enter cuisines" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
-            <!-- Step 8: Timings -->
             <div class="form-step" id="step8" style="display: none;">
-                <h3>Step 8: Enter Restaurant Timings</h3>
+                <label for="feature8">Restaurant Timings (Example: 10AM - 11PM):</label>
                 <input type="text" id="feature8" name="feature8" placeholder="Enter timings" required>
-                <button type="submit">Get Prediction</button>
+                <button type="submit">Submit</button>
             </div>
         </form>
     </section>
 
+    <!-- Result Display Section -->
     <section class="result-container" id="result-container" style="display: none;">
         <h2>Prediction Result</h2>
         <p id="prediction-output"></p>
         <button id="restart-btn">Analyze Again</button>
     </section>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Zomato Insights. All rights reserved.</p>
     </footer>
 
     <script>
-        // JavaScript to handle step-by-step navigation
+        // JavaScript to handle form steps, showing next steps and submitting the form
         const steps = document.querySelectorAll('.form-step');
         const nextBtns = document.querySelectorAll('.next-btn');
         const startBtn = document.getElementById('start-btn');
@@ -127,7 +112,7 @@
         let currentStep = 0;
 
         startBtn.addEventListener('click', () => {
-            document.querySelector('.hero-section').style.display = 'none';
+            document.querySelector('.landing-page').style.display = 'none';
             formContainer.style.display = 'block';
             showStep(currentStep);
         });
@@ -155,7 +140,7 @@
 
         restartBtn.addEventListener('click', () => {
             resultContainer.style.display = 'none';
-            document.querySelector('.hero-section').style.display = 'block';
+            document.querySelector('.landing-page').style.display = 'block';
             currentStep = 0;
         });
 

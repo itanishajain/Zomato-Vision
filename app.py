@@ -4,12 +4,12 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Load the dataset
+# Load the dataset (ensure the path to the CSV is correct)
 df = pd.read_csv('Zomato data.csv')
 
 # Function to predict restaurant type based on inputs
 def predict_restaurant_type(restaurant_type, approx_cost, online_order, votes, location, cuisines, timings, rating):
-    # Example simple prediction logic based on user input
+    # Example logic: refine prediction based on inputs
     if restaurant_type == 'Casual Dining' and approx_cost > 500:
         return "High-end Casual Dining"
     elif restaurant_type == 'Cafe' and approx_cost <= 500:
@@ -20,6 +20,8 @@ def predict_restaurant_type(restaurant_type, approx_cost, online_order, votes, l
         return "Top Rated Restaurant"
     elif votes > 1000:
         return "Popular Restaurant"
+    elif location in df['location'].values:
+        return f"Restaurant in {location} with good ratings"
     else:
         return "Generic Restaurant"
 
@@ -30,17 +32,18 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     # Get the input values from the form
-    restaurant_type = request.form.get('feature1')
-    approx_cost = float(request.form.get('feature2'))
-    rating = float(request.form.get('feature6'))
-    votes = int(request.form.get('feature4'))
-    online_order = request.form.get('feature3')
-    location = request.form.get('feature5')
-    cuisines = request.form.get('feature7')
-    timings = request.form.get('feature8')
+    restaurant_type = request.form.get('restaurant_type')
+    approx_cost = float(request.form.get('approx_cost'))
+    rating = float(request.form.get('rating'))
+    votes = int(request.form.get('votes'))
+    online_order = request.form.get('online_order')
+    location = request.form.get('location')
+    cuisines = request.form.get('cuisines')
+    timings = request.form.get('timings')
 
-    # Use the input data to predict the restaurant type or other details
-    prediction = predict_restaurant_type(restaurant_type, approx_cost, online_order, votes, location, cuisines, timings, rating)
+    # Predict the restaurant type based on input data
+    prediction = predict_restaurant_type(
+        restaurant_type, approx_cost, online_order, votes, location, cuisines, timings, rating)
 
     # Return the prediction result
     return render_template('index.html', prediction=prediction)
