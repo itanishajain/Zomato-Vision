@@ -3,29 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zomato Data Analysis</title>
+    <title>Zomato Insights</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="navbar">
-        <div class="container">
-            <h1 class="logo">Zomato Insights</h1>
-        </div>
+    <header>
+        <h1>Zomato Insights</h1>
+        <p>Discover trends, analyze data, and predict outcomes</p>
     </header>
 
-    <main class="main-content">
-        <section class="hero-section">
+    <section class="hero-section">
+        <div>
             <h2>Welcome to Zomato Insights</h2>
-            <p>Discover trends, analyze data, and predict outcomes for your restaurant decisions.</p>
-        </section>
+            <button id="start-btn">Start Analyzing</button>
+        </div>
+    </section>
 
-        <section class="form-section">
-            <h3>Generate Predictions</h3>
-            <form method="POST" action="/predict" class="prediction-form">
-                <!-- Restaurant Type Input -->
-                <label for="feature1">Restaurant Type:</label>
+    <section class="form-container" id="form-container">
+        <form id="prediction-form" method="POST" action="/predict">
+            <!-- Step 1: Restaurant Type -->
+            <div class="form-step" id="step1">
+                <h3>Step 1: Select Restaurant Type</h3>
                 <select id="feature1" name="feature1" required>
                     <option value="Casual Dining">Casual Dining</option>
                     <option value="Cafe">Cafe</option>
@@ -34,52 +34,122 @@
                     <option value="Delivery">Delivery</option>
                     <option value="Takeaway">Takeaway</option>
                 </select>
+                <button type="button" class="next-btn">Next</button>
+            </div>
 
-                <!-- Approximate Cost Input -->
-                <label for="feature2">Approximate Cost for Two:</label>
+            <!-- Step 2: Approximate Cost -->
+            <div class="form-step" id="step2" style="display: none;">
+                <h3>Step 2: Enter Approximate Cost for Two</h3>
                 <input type="number" id="feature2" name="feature2" placeholder="Enter cost" required>
+                <button type="button" class="next-btn">Next</button>
+            </div>
 
-                <!-- Rating Input -->
-                <label for="feature6">Rating:</label>
+            <!-- Step 3: Rating -->
+            <div class="form-step" id="step3" style="display: none;">
+                <h3>Step 3: Enter Restaurant Rating</h3>
                 <input type="number" step="0.1" id="feature6" name="feature6" placeholder="Enter rating" required>
+                <button type="button" class="next-btn">Next</button>
+            </div>
 
-                <!-- Votes Input -->
-                <label for="feature4">Number of Votes:</label>
+            <!-- Step 4: Votes -->
+            <div class="form-step" id="step4" style="display: none;">
+                <h3>Step 4: Enter Number of Votes</h3>
                 <input type="number" id="feature4" name="feature4" placeholder="Enter votes" required>
+                <button type="button" class="next-btn">Next</button>
+            </div>
 
-                <!-- Online Order Availability Input -->
-                <label for="feature3">Online Order Available:</label>
+            <!-- Step 5: Online Order Availability -->
+            <div class="form-step" id="step5" style="display: none;">
+                <h3>Step 5: Is Online Order Available?</h3>
                 <select id="feature3" name="feature3" required>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select>
-
-                <!-- Location Input -->
-                <label for="feature5">Location:</label>
-                <input type="text" id="feature5" name="feature5" placeholder="Enter location" required>
-
-                <!-- Cuisines Input -->
-                <label for="feature7">Cuisines:</label>
-                <input type="text" id="feature7" name="feature7" placeholder="Enter cuisines (comma-separated)" required>
-
-                <!-- Timings Input -->
-                <label for="feature8">Timings:</label>
-                <input type="text" id="feature8" name="feature8" placeholder="Enter restaurant timings" required>
-
-                <button type="submit" class="btn-submit">Predict</button>
-            </form>
-
-            {% if prediction %}
-            <div class="prediction-result">
-                <h4>Prediction Result:</h4>
-                <p>{{ prediction }}</p>
+                <button type="button" class="next-btn">Next</button>
             </div>
-            {% endif %}
-        </section>
-    </main>
 
-    <footer class="footer">
+            <!-- Step 6: Location -->
+            <div class="form-step" id="step6" style="display: none;">
+                <h3>Step 6: Enter Location</h3>
+                <input type="text" id="feature5" name="feature5" placeholder="Enter location" required>
+                <button type="button" class="next-btn">Next</button>
+            </div>
+
+            <!-- Step 7: Cuisines -->
+            <div class="form-step" id="step7" style="display: none;">
+                <h3>Step 7: Enter Cuisines</h3>
+                <input type="text" id="feature7" name="feature7" placeholder="Enter cuisines (comma-separated)" required>
+                <button type="button" class="next-btn">Next</button>
+            </div>
+
+            <!-- Step 8: Timings -->
+            <div class="form-step" id="step8" style="display: none;">
+                <h3>Step 8: Enter Restaurant Timings</h3>
+                <input type="text" id="feature8" name="feature8" placeholder="Enter timings" required>
+                <button type="submit">Get Prediction</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="result-container" id="result-container" style="display: none;">
+        <h2>Prediction Result</h2>
+        <p id="prediction-output"></p>
+        <button id="restart-btn">Analyze Again</button>
+    </section>
+
+    <footer>
         <p>&copy; 2024 Zomato Insights. All rights reserved.</p>
     </footer>
+
+    <script>
+        // JavaScript to handle step-by-step navigation
+        const steps = document.querySelectorAll('.form-step');
+        const nextBtns = document.querySelectorAll('.next-btn');
+        const startBtn = document.getElementById('start-btn');
+        const formContainer = document.getElementById('form-container');
+        const resultContainer = document.getElementById('result-container');
+        const predictionForm = document.getElementById('prediction-form');
+        const predictionOutput = document.getElementById('prediction-output');
+        const restartBtn = document.getElementById('restart-btn');
+
+        let currentStep = 0;
+
+        startBtn.addEventListener('click', () => {
+            document.querySelector('.hero-section').style.display = 'none';
+            formContainer.style.display = 'block';
+            showStep(currentStep);
+        });
+
+        nextBtns.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                steps[index].style.display = 'none';
+                currentStep++;
+                showStep(currentStep);
+            });
+        });
+
+        predictionForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(predictionForm);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.text();
+            formContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            predictionOutput.textContent = result;
+        });
+
+        restartBtn.addEventListener('click', () => {
+            resultContainer.style.display = 'none';
+            document.querySelector('.hero-section').style.display = 'block';
+            currentStep = 0;
+        });
+
+        function showStep(step) {
+            if (steps[step]) steps[step].style.display = 'block';
+        }
+    </script>
 </body>
 </html>
