@@ -1,0 +1,74 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f9f9f9;
+    color: #333;
+}
+
+.navbar {
+    background: #ff6f61;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.navbar .logo {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(to right, #ff6f61, #f2f2f2);
+    color: #fff;
+}
+
+.form-section, .visualize-section {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin: 0.5rem 0 0.2rem;
+    font-weight: 500;
+}
+
+input, select, .btn-submit {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.btn-submit {
+    background: #ff6f61;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background: #e65a4f;
+}
+
+.prediction-result, .visualization-result {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #ff6f61;
+    color: #fff;
+}
