@@ -9,26 +9,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Background Image/GIF -->
+    <!-- Background Image -->
     <div class="background-container">
-        <img src="your-beautiful-image-or-gif.jpg" alt="Background" class="background-image">
+        <img src="{{ url_for('static', filename='background image.webp') }}" alt="Background" class="background-image">
+
     </div>
 
     <!-- Landing Page Section -->
     <section class="landing-page">
         <div class="intro-text">
             <h1>Zomato Insights</h1>
-            <p>Analyze restaurant data and predict the satisfaction based on various features.</p>
+            <p>Analyze restaurant data and predict satisfaction based on various features.</p>
             <button id="start-btn" class="start-btn">Start Prediction</button>
         </div>
     </section>
 
     <!-- Prediction Form Section -->
     <section class="form-container" id="form-container" style="display: none;">
-        <form id="prediction-form">
+        <form id="prediction-form" action="{{ url_for('predict') }}" method="POST">
+
             <div class="form-step" id="step1">
-                <label for="feature1">Restaurant Type (Example: Casual Dining):</label>
-                <select id="feature1" name="feature1" required>
+                <label for="restaurant_type">Restaurant Type:</label>
+                <select id="restaurant_type" name="restaurant_type" required>
                     <option value="Casual Dining">Casual Dining</option>
                     <option value="Cafe">Cafe</option>
                     <option value="Quick Bites">Quick Bites</option>
@@ -40,26 +42,26 @@
             </div>
 
             <div class="form-step" id="step2" style="display: none;">
-                <label for="feature2">Approximate Cost for Two (Example: 500):</label>
-                <input type="number" id="feature2" name="feature2" placeholder="Enter cost for two" required>
+                <label for="approx_cost">Approximate Cost for Two:</label>
+                <input type="number" id="approx_cost" name="approx_cost" placeholder="Enter cost for two" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
             <div class="form-step" id="step3" style="display: none;">
-                <label for="feature6">Restaurant Rating (Example: 4.5):</label>
-                <input type="number" step="0.1" id="feature6" name="feature6" placeholder="Enter rating" required>
+                <label for="rating">Restaurant Rating:</label>
+                <input type="number" step="0.1" id="rating" name="rating" placeholder="Enter rating" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
             <div class="form-step" id="step4" style="display: none;">
-                <label for="feature4">Number of Votes (Example: 100):</label>
-                <input type="number" id="feature4" name="feature4" placeholder="Enter number of votes" required>
+                <label for="votes">Number of Votes:</label>
+                <input type="number" id="votes" name="votes" placeholder="Enter number of votes" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
             <div class="form-step" id="step5" style="display: none;">
-                <label for="feature3">Is Online Order Available? (Example: Yes):</label>
-                <select id="feature3" name="feature3" required>
+                <label for="online_order">Is Online Order Available?</label>
+                <select id="online_order" name="online_order" required>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select>
@@ -67,20 +69,20 @@
             </div>
 
             <div class="form-step" id="step6" style="display: none;">
-                <label for="feature5">Restaurant Location (Example: Delhi):</label>
-                <input type="text" id="feature5" name="feature5" placeholder="Enter location" required>
+                <label for="location">Restaurant Location:</label>
+                <input type="text" id="location" name="location" placeholder="Enter location" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
             <div class="form-step" id="step7" style="display: none;">
-                <label for="feature7">Cuisine Types (Example: Indian, Chinese):</label>
-                <input type="text" id="feature7" name="feature7" placeholder="Enter cuisines" required>
+                <label for="cuisines">Cuisine Types:</label>
+                <input type="text" id="cuisines" name="cuisines" placeholder="Enter cuisines" required>
                 <button type="button" class="next-btn">Next</button>
             </div>
 
             <div class="form-step" id="step8" style="display: none;">
-                <label for="feature8">Restaurant Timings (Example: 10AM - 11PM):</label>
-                <input type="text" id="feature8" name="feature8" placeholder="Enter timings" required>
+                <label for="timings">Restaurant Timings:</label>
+                <input type="text" id="timings" name="timings" placeholder="Enter timings" required>
                 <button type="submit">Submit</button>
             </div>
         </form>
@@ -89,24 +91,21 @@
     <!-- Result Display Section -->
     <section class="result-container" id="result-container" style="display: none;">
         <h2>Prediction Result</h2>
-        <p id="prediction-output"></p>
+        <p id="prediction-output">{{ prediction }}</p>
         <button id="restart-btn">Analyze Again</button>
-    </section>
+    </section>    
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Zomato Insights. All rights reserved.</p>
     </footer>
 
     <script>
-        // JavaScript to handle form steps, showing next steps and submitting the form
+        // Updated JavaScript logic
         const steps = document.querySelectorAll('.form-step');
         const nextBtns = document.querySelectorAll('.next-btn');
         const startBtn = document.getElementById('start-btn');
         const formContainer = document.getElementById('form-container');
         const resultContainer = document.getElementById('result-container');
-        const predictionForm = document.getElementById('prediction-form');
-        const predictionOutput = document.getElementById('prediction-output');
         const restartBtn = document.getElementById('restart-btn');
 
         let currentStep = 0;
@@ -123,19 +122,6 @@
                 currentStep++;
                 showStep(currentStep);
             });
-        });
-
-        predictionForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const formData = new FormData(predictionForm);
-            const response = await fetch('/predict', {
-                method: 'POST',
-                body: formData,
-            });
-            const result = await response.text();
-            formContainer.style.display = 'none';
-            resultContainer.style.display = 'block';
-            predictionOutput.textContent = result;
         });
 
         restartBtn.addEventListener('click', () => {

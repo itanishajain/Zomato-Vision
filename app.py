@@ -1,15 +1,13 @@
 from flask import Flask, render_template, request
 import pandas as pd
-import numpy as np
 
 app = Flask(__name__)
 
-# Load the dataset (ensure the path to the CSV is correct)
+# Load the dataset
 df = pd.read_csv('Zomato data.csv')
 
-# Function to predict restaurant type based on inputs
+# Prediction function
 def predict_restaurant_type(restaurant_type, approx_cost, online_order, votes, location, cuisines, timings, rating):
-    # Example logic: refine prediction based on inputs
     if restaurant_type == 'Casual Dining' and approx_cost > 500:
         return "High-end Casual Dining"
     elif restaurant_type == 'Cafe' and approx_cost <= 500:
@@ -27,11 +25,11 @@ def predict_restaurant_type(restaurant_type, approx_cost, online_order, votes, l
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', prediction=None)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Get the input values from the form
+    # Gather form inputs
     restaurant_type = request.form.get('restaurant_type')
     approx_cost = float(request.form.get('approx_cost'))
     rating = float(request.form.get('rating'))
@@ -41,11 +39,12 @@ def predict():
     cuisines = request.form.get('cuisines')
     timings = request.form.get('timings')
 
-    # Predict the restaurant type based on input data
+    # Prediction
     prediction = predict_restaurant_type(
-        restaurant_type, approx_cost, online_order, votes, location, cuisines, timings, rating)
+        restaurant_type, approx_cost, online_order, votes, location, cuisines, timings, rating
+    )
 
-    # Return the prediction result
+    # Return prediction
     return render_template('index.html', prediction=prediction)
 
 if __name__ == '__main__':
