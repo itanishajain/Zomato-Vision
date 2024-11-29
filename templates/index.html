@@ -3,161 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zomato Insights</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Zomato Prediction</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Background Image -->
-    <div class="background-container">
-        <img src="{{ url_for('static', filename='background image.webp') }}" alt="Background" class="background-image">
-    </div>
-
-   <!-- Landing Page Section -->
-   <section class="landing-page">
-    <div class="landing-content">
-        <h1>Zomato Insights</h1>
-        <p>Welcome to Zomato Insights! Analyze restaurant data to predict customer satisfaction and explore detailed insights.</p>
-        <div class="intro-btn-container">
-            <button id="start-btn" class="start-btn">Start Prediction</button>
-            <button id="about-btn" class="about-btn">Learn More</button>
+    <!-- Landing Page Section -->
+    <section class="landing-page">
+        <div class="content">
+            <h1>Welcome to Zomato Prediction</h1>
+            <p>Predict restaurant ratings based on key features and find your perfect dining spot!</p>
+            <button onclick="window.location.href='/prediction'">Start Prediction</button>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- About Section -->
-<section class="about-section" id="about-section" style="display: none;">
-    <div class="about-content">
-        <h2>About Zomato Insights</h2>
-        <p>Zomato Insights helps businesses and analysts gain deep insights into customer preferences, satisfaction, and restaurant trends.</p>
-        <ul>
-            <li><strong>Comprehensive Data Analysis</strong>: Analyze key restaurant features like type, rating, votes, and more.</li>
-            <li><strong>Accurate Predictions</strong>: Predict customer satisfaction based on various restaurant characteristics.</li>
-            <li><strong>Easy-to-Use Interface</strong>: Simplified data entry and visualization for quick insights.</li>
-        </ul>
-    </div>
-</section>
-
-<!-- Prediction Form Section -->
-<section class="form-container" id="form-container" style="display: none;">
-    <form id="prediction-form" action="{{ url_for('predict') }}" method="POST">
-        <div class="form-step" id="step1">
-            <label for="restaurant_type">Restaurant Type:</label>
-            <select id="restaurant_type" name="restaurant_type" required>
-                <option value="Casual Dining">Casual Dining</option>
-                <option value="Cafe">Cafe</option>
-                <option value="Quick Bites">Quick Bites</option>
-                <option value="Fine Dining">Fine Dining</option>
-                <option value="Delivery">Delivery</option>
-                <option value="Takeaway">Takeaway</option>
-            </select>
-            <button type="button" class="next-btn">Next</button>
+    <!-- Prediction Form Section -->
+    <section id="prediction-form">
+        <div class="container">
+            <div class="form-content">
+                <form method="POST" action="/predict">
+                    <div class="input-section">
+                        <label for="name">Restaurant Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="input-section">
+                        <label for="online_order">Online Order:</label>
+                        <select id="online_order" name="online_order" required>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div class="input-section">
+                        <label for="book_table">Book Table:</label>
+                        <select id="book_table" name="book_table" required>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div class="input-section">
+                        <label for="rate">Rating:</label>
+                        <input type="text" id="rate" name="rate" required>
+                    </div>
+                    <div class="input-section">
+                        <label for="votes">Votes:</label>
+                        <input type="number" id="votes" name="votes" required>
+                    </div>
+                    <div class="input-section">
+                        <label for="approx_cost">Approximate Cost for Two:</label>
+                        <input type="number" id="approx_cost" name="approx_cost" required>
+                    </div>
+                    <div class="input-section">
+                        <label for="listed_in">Listed In:</label>
+                        <select id="listed_in" name="listed_in" required>
+                            <option value="Buffet">Buffet</option>
+                            <option value="Cafes">Cafes</option>
+                            <option value="Dining">Dining</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="image">
+                <img src="restaurant-image.jpg" alt="Restaurant Image">
+            </div>
         </div>
+    </section>
 
-        <div class="form-step" id="step2" style="display: none;">
-            <label for="approx_cost">Approximate Cost for Two:</label>
-            <input type="number" id="approx_cost" name="approx_cost" placeholder="Enter cost for two" required>
-            <button type="button" class="next-btn">Next</button>
+    <!-- Prediction Result Section -->
+    <section id="prediction-result">
+        <div class="result">
+            <h3>Prediction Result</h3>
+            <p id="prediction-output">Your prediction will appear here.</p>
         </div>
-
-        <div class="form-step" id="step3" style="display: none;">
-            <label for="rating">Restaurant Rating:</label>
-            <input type="number" step="0.1" id="rating" name="rating" placeholder="Enter rating" required>
-            <button type="button" class="next-btn">Next</button>
-        </div>
-
-        <div class="form-step" id="step4" style="display: none;">
-            <label for="votes">Number of Votes:</label>
-            <input type="number" id="votes" name="votes" placeholder="Enter number of votes" required>
-            <button type="button" class="next-btn">Next</button>
-        </div>
-
-        <div class="form-step" id="step5" style="display: none;">
-            <label for="online_order">Is Online Order Available?</label>
-            <select id="online_order" name="online_order" required>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            <button type="button" class="next-btn">Next</button>
-        </div>
-
-        <div class="form-step" id="step6" style="display: none;">
-            <label for="location">Restaurant Location:</label>
-            <input type="text" id="location" name="location" placeholder="Enter location" required>
-            <button type="button" class="next-btn">Next</button>
-        </div>
-
-        <div class="form-step" id="step7" style="display: none;">
-            <label for="cuisines">Cuisine Types:</label>
-            <input type="text" id="cuisines" name="cuisines" placeholder="Enter cuisines" required>
-            <button type="button" class="next-btn">Next</button>
-        </div>
-
-        <div class="form-step" id="step8" style="display: none;">
-            <label for="timings">Restaurant Timings:</label>
-            <input type="text" id="timings" name="timings" placeholder="Enter timings" required>
-            <button type="submit">Submit</button>
-        </div>
-    </form>
-</section>
-
-<!-- Result Display Section -->
-<section class="result-container" id="result-container" style="display: none;">
-    <h2>Prediction Result</h2>
-    <p id="prediction-output">{{ prediction }}</p>
-    <button id="restart-btn">Analyze Again</button>
-</section>
-
-<!-- Footer Section -->
-<footer>
-    <div class="footer-content">
-        <p>&copy; 2024 Zomato Insights. All rights reserved.</p>
-        <p>Made with <span class="heart">&#10084;</span> by Tanisha Jain</p>
-    </div>
-</footer>
-
-<script>
-    const steps = document.querySelectorAll('.form-step');
-    const nextBtns = document.querySelectorAll('.next-btn');
-    const startBtn = document.getElementById('start-btn');
-    const formContainer = document.getElementById('form-container');
-    const resultContainer = document.getElementById('result-container');
-    const restartBtn = document.getElementById('restart-btn');
-    const aboutBtn = document.getElementById('about-btn');
-    const aboutSection = document.getElementById('about-section');
-
-    let currentStep = 0;
-
-    startBtn.addEventListener('click', () => {
-        document.querySelector('.landing-page').style.display = 'none';
-        formContainer.style.display = 'block';
-        showStep(currentStep);
-    });
-
-    nextBtns.forEach((btn, index) => {
-        btn.addEventListener('click', () => {
-            steps[index].style.display = 'none';
-            currentStep++;
-            showStep(currentStep);
-        });
-    });
-
-    restartBtn.addEventListener('click', () => {
-        resultContainer.style.display = 'none';
-        document.querySelector('.landing-page').style.display = 'block';
-        currentStep = 0;
-    });
-
-    aboutBtn.addEventListener('click', () => {
-        document.querySelector('.landing-page').style.display = 'none';
-        aboutSection.style.display = 'block';
-    });
-
-    function showStep(step) {
-        if (steps[step]) steps[step].style.display = 'block';
-    }
-</script>
-
+    </section>
 </body>
 </html>

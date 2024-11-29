@@ -1,182 +1,126 @@
-/* Basic Reset */
+/* Global Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f8f8f8;
-  color: #333;
-  margin: 0;
-  padding: 0;
-}
-
-h1, h2 {
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-/* Landing Page */
-.landing-page {
-  background: url('../static/background image.webp') no-repeat center center fixed;
+  font-family: Arial, sans-serif;
+  background-image: url('background.jpg');
   background-size: cover;
+  color: #fff;
   height: 100vh;
-  text-align: center;
-  color: white;
-  padding-top: 200px;
+  overflow: hidden;
+}
+
+/* Landing Page Styles */
+.landing-page {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  height: 100vh;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
 }
-
-.landing-content h1 {
+.landing-page .content {
+  max-width: 600px;
+}
+.landing-page h1 {
   font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
-
-.landing-content p {
+.landing-page p {
   font-size: 1.5rem;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+}
+.landing-page button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.landing-page button:hover {
+  background-color: #45a049;
 }
 
-.intro-btn-container {
+/* Prediction Form Styles */
+#prediction-form {
   display: flex;
-  gap: 20px;
-}
-
-.start-btn, .about-btn {
-  padding: 12px 25px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  background-color: #1e90ff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.start-btn:hover, .about-btn:hover {
-  background-color: #ff6347;
-}
-
-/* About Section */
-.about-section {
-  padding: 50px 20px;
-  background-color: #fff;
-  text-align: center;
-  color: #333;
-}
-
-.about-content h2 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.about-content p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.about-content ul {
-  list-style: none;
-  padding: 0;
-}
-
-.about-content li {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-/* Prediction Form */
-.form-container {
-  background-color: #f4f4f4;
-  padding: 40px 20px;
-}
-
-.form-step {
-  margin-bottom: 25px;
-}
-
-input, select {
-  padding: 12px;
-  width: 100%;
-  font-size: 1rem;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button {
-  padding: 12px 25px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  background-color: #1e90ff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  margin-top: 15px;
-}
-
-button:hover {
-  background-color: #ff6347;
-}
-
-/* Result Section */
-.result-container {
-  padding: 50px 20px;
-  background-color: #fff;
-  text-align: center;
-}
-
-#prediction-output {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-/* Footer Section */
-footer {
-  background-color: #333;
-  color: white;
+  justify-content: center;
   padding: 20px;
-  text-align: center;
+  background-color: rgba(0, 0, 0, 0.7);
 }
-
-footer p {
+.container {
+  display: flex;
+  max-width: 1000px;
+  width: 100%;
+  justify-content: space-between;
+}
+.form-content {
+  width: 60%;
+  padding-right: 20px;
+}
+.input-section {
+  margin-bottom: 20px;
+}
+.input-section label {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+.input-section input, .input-section select {
+  width: 100%;
+  padding: 10px;
   font-size: 1rem;
-  margin: 0;
+  border-radius: 5px;
+  border: none;
+  background-color: #f4f4f4;
+}
+.buttons {
+  margin-top: 30px;
+}
+.buttons button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.buttons button:hover {
+  background-color: #45a049;
+}
+.image {
+  width: 35%;
+  display: flex;
+  justify-content: center;
+}
+.image img {
+  max-width: 100%;
+  border-radius: 10px;
 }
 
-.heart {
-  color: red;
+/* Prediction Result Styles */
+#prediction-result {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
 }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .landing-content h1 {
-      font-size: 2rem;
-  }
-
-  .landing-content p {
-      font-size: 1rem;
-  }
-
-  .intro-btn-container {
-      flex-direction: column;
-  }
-  
-  .start-btn, .about-btn {
-      font-size: 1rem;
-      margin-bottom: 15px;
-  }
-
-  .about-section, .form-container, .result-container {
-      padding: 30px 15px;
-  }
+#prediction-result .result {
+  text-align: center;
+  max-width: 600px;
+}
+#prediction-result h3 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+#prediction-result p {
+  font-size: 1.5rem;
+  margin-top: 20px;
 }

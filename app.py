@@ -1,51 +1,41 @@
 from flask import Flask, render_template, request
-import pandas as pd
+import pickle
 import numpy as np
 
+# Initialize Flask App
 app = Flask(__name__)
 
-# Example function to simulate a prediction (you can replace it with your own model)
-def predict_customer_satisfaction(data):
-    # Dummy logic for predicting customer satisfaction (replace with your actual ML model)
-    if float(data['rating']) > 4 and int(data['votes']) > 1000:
-        return "High Satisfaction"
-    elif float(data['rating']) < 3:
-        return "Low Satisfaction"
-    else:
-        return "Moderate Satisfaction"
+# Load the pre-trained model (you should train and save it beforehand)
+model = pickle.load(open('zomato_model.pkl', 'rb'))
 
 @app.route('/')
-def home():
-    return render_template('index.html', prediction=None)
+def index():
+    return render_template('index.html')
+
+@app.route('/prediction')
+def prediction():
+    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Extract user inputs
-    restaurant_type = request.form['restaurant_type']
-    approx_cost = request.form['approx_cost']
-    rating = request.form['rating']
-    votes = request.form['votes']
-    online_order = request.form['online_order']
-    location = request.form['location']
-    cuisines = request.form['cuisines']
-    timings = request.form['timings']
-    
-    # Example of processing the data into a format for prediction
-    data = {
-        'restaurant_type': restaurant_type,
-        'approx_cost': approx_cost,
-        'rating': rating,
-        'votes': votes,
-        'online_order': online_order,
-        'location': location,
-        'cuisines': cuisines,
-        'timings': timings
-    }
-    
-    # Here you would load the actual model and make a prediction (use model.predict())
-    prediction = predict_customer_satisfaction(data)
+    # Get user input from the form
+    name = request.form['name']
+    online_order = 1 if request.form['online_order'] == 'Yes' else 0
+    book_table = 1 if request.form['book_table'] == 'Yes' else 0
+    rate = float(request.form['rate'].split('/')[0])
+    votes = int(request.form['votes'])
+    approx_cost = int(request.form['approx_cost'])
+    listed_in = request.form['listed_in']
+    listed_in_encoded = {'Buffet': 0, 'Cafes': 1, 'Dining': 2, 'Other': 3}.get(listed_in, 0)
 
-    return render_template('index.html', prediction=prediction)
+    # Prepare input for prediction
+    user_input = np.array([[name, online_order, book_table, rate, votes, approx_cost, listed_in_encoded]])
+
+    # Make prediction
+    prediction = model.predict(user_input)
+
+    # Return prediction result
+    return render_template('index.html', prediction_output=prediction[0])
 
 if __name__ == '__main__':
     app.run(debug=True)
